@@ -10,6 +10,7 @@ local Venison = {
 function Venison.main(settings, setup, draw)
     settings()
     setup()
+    -- ah, yes, an extremely efficient game loop
     -- while true do
     draw()
     -- end

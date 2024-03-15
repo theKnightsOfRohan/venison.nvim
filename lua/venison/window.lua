@@ -1,48 +1,79 @@
 local Popup = require("nui.popup")
+local Logger = require("venison.logger")
 
 ---@class VenisonWindow
 ---@field mounted boolean
+---@field win nil | NuiPopup
 local Window = {
     mounted = false,
+    win = nil,
 }
 
--- Open a window which has been created
 ---@param self VenisonWindow
 function Window:open()
-    assert(self.win, "Window is not created")
-    assert(not self.mounted, "Window is already opened")
+    local pass = Logger:assert(self.win, "open(): window is not created")
+    if not pass then
+        return
+    end
+
+    pass = Logger:assert(not self.mounted, "open(): window is already open")
+    if not pass then
+        return
+    end
 
     self.win:show()
     self.mounted = true
+
+    Logger:log("open(): window opened")
 end
 
 -- Close a window which has been opened (non-destructive)
 ---@param self VenisonWindow
 function Window:close()
-    assert(self.win, "Window is not created")
-    assert(self.mounted, "Window is not opened")
+    local pass = Logger:assert(self.win, "close(): window is not created")
+    if not pass then
+        return
+    end
+
+    pass = Logger:assert(self.mounted, "close(): window is not open")
+    if not pass then
+        return
+    end
 
     self.win:hide()
     self.mounted = false
+
+    Logger:log("close(): window closed")
 end
 
 -- Destroy a window which has been created
 ---@param self VenisonWindow
 function Window:destroy()
-    assert(self.win, "Window is not created")
+    local pass = Logger:assert(self.win, "destroy(): window is not created")
+    if not pass then
+        return
+    end
 
     if self.mounted then
+        Logger:log("destroy(): closing open window before destroying")
         self:close()
     end
+
     self.win:unmount()
     self.win = nil
+    self.mounted = false
+
+    Logger:log("destroy(): window destroyed")
 end
 
 -- Create a window, set up keymaps, and store it in the window object
 ---@param self VenisonWindow
 ---@param maps table<string | string[], function | string>
 function Window:create(maps)
-    assert(not self.win, "Window is already created")
+    local pass = Logger:assert(self.win == nil, "create(): window already exists")
+    if not pass then
+        return
+    end
 
     self.win = Popup({
         position = "50%",
@@ -55,19 +86,9 @@ function Window:create(maps)
         zindex = 50,
         relative = "editor",
         border = {
-            padding = {
-                top = 2,
-                bottom = 2,
-                left = 3,
-                right = 3,
-            },
+            padding = {},
             style = "rounded",
-            text = {
-                top = " I am top title ",
-                top_align = "center",
-                bottom = "I am bottom title",
-                bottom_align = "left",
-            },
+            text = {},
         },
         buf_options = {
             modifiable = true,
@@ -79,9 +100,25 @@ function Window:create(maps)
         },
     })
 
+    Logger:log("create(): window created")
+
     for keys, mapping in pairs(maps) do
         self.win:map("n", keys, mapping, { noremap = true })
     end
+
+    Logger:log(string.format("create(): keymaps set: %s", vim.inspect(maps)))
+end
+
+function Window:override(maps)
+    local pass = Logger:assert(self.win ~= nil, "override(): window does not exist")
+    if not pass then
+        return
+    end
+
+    Logger:log("override(): overriding window")
+
+    self.win = nil
+    self:create(maps)
 end
 
 return Window

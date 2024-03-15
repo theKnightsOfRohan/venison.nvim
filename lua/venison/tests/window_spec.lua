@@ -1,10 +1,10 @@
 local Utils = require("venison.utils")
 local Window = require("venison.window")
 
-describe("Window ", function()
+describe("Window", function()
     before_each(function()
-        vim.cmd("only!")
-        vim.cmd("enew!")
+        vim.cmd("silent only!")
+        vim.cmd("silent enew!")
     end)
 
     it("should successfully be created", function()

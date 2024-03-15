@@ -4,19 +4,18 @@ local Venison = require("venison")
 local window = Venison.window
 
 local function settings()
-    if not window.win then
-        window:create({
-            ["q"] = function()
-                window:close()
-            end,
-        })
-    end
+    window:create({
+        ["q"] = function()
+            window:close()
+        end,
+        ["<S-q>"] = function()
+            window:destroy()
+        end,
+    })
 end
 
 local function setup()
-    if not window.mounted then
-        window:open()
-    end
+    window:open()
 end
 
 local function draw() end
