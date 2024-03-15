@@ -11,12 +11,12 @@ local Window = {
 
 ---@param self VenisonWindow
 function Window:open()
-    local pass = Logger:assert(self.win, "open(): window is not created")
+    local pass = Logger:assert(self.win, "venison.window.open(): window is not created")
     if not pass then
         return
     end
 
-    pass = Logger:assert(not self.mounted, "open(): window is already open")
+    pass = Logger:assert(not self.mounted, "venison.window.open(): window is already open")
     if not pass then
         return
     end
@@ -24,18 +24,18 @@ function Window:open()
     self.win:show()
     self.mounted = true
 
-    Logger:log("open(): window opened")
+    Logger:log("venison.window.open(): window opened")
 end
 
 -- Close a window which has been opened (non-destructive)
 ---@param self VenisonWindow
 function Window:close()
-    local pass = Logger:assert(self.win, "close(): window is not created")
+    local pass = Logger:assert(self.win, "venison.window.close(): window is not created")
     if not pass then
         return
     end
 
-    pass = Logger:assert(self.mounted, "close(): window is not open")
+    pass = Logger:assert(self.mounted, "venison.window.close(): window is not open")
     if not pass then
         return
     end
@@ -43,19 +43,19 @@ function Window:close()
     self.win:hide()
     self.mounted = false
 
-    Logger:log("close(): window closed")
+    Logger:log("venison.window.close(): window closed")
 end
 
 -- Destroy a window which has been created
 ---@param self VenisonWindow
 function Window:destroy()
-    local pass = Logger:assert(self.win, "destroy(): window is not created")
+    local pass = Logger:assert(self.win, "venison.window.destroy(): window is not created")
     if not pass then
         return
     end
 
     if self.mounted then
-        Logger:log("destroy(): closing open window before destroying")
+        Logger:log("venison.window.destroy(): closing open window before destroying")
         self:close()
     end
 
@@ -63,14 +63,14 @@ function Window:destroy()
     self.win = nil
     self.mounted = false
 
-    Logger:log("destroy(): window destroyed")
+    Logger:log("venison.window.destroy(): window destroyed")
 end
 
 -- Create a window, set up keymaps, and store it in the window object
 ---@param self VenisonWindow
 ---@param maps table<string | string[], function | string>
 function Window:create(maps)
-    local pass = Logger:assert(self.win == nil, "create(): window already exists")
+    local pass = Logger:assert(self.win == nil, "venison.window.create(): window already exists")
     if not pass then
         return
     end
@@ -100,22 +100,22 @@ function Window:create(maps)
         },
     })
 
-    Logger:log("create(): window created")
+    Logger:log("venison.window.create(): window created")
 
     for keys, mapping in pairs(maps) do
         self.win:map("n", keys, mapping, { noremap = true })
     end
 
-    Logger:log(string.format("create(): keymaps set: %s", vim.inspect(maps)))
+    Logger:log(string.format("venison.window.create(): keymaps set: %s", vim.inspect(maps)))
 end
 
 function Window:override(maps)
-    local pass = Logger:assert(self.win ~= nil, "override(): window does not exist")
+    local pass = Logger:assert(self.win ~= nil, "venison.window.override(): window does not exist")
     if not pass then
         return
     end
 
-    Logger:log("override(): overriding window")
+    Logger:log("venison.window.override(): overriding window")
 
     self.win = nil
     self:create(maps)
