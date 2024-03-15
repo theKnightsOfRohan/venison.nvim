@@ -9,8 +9,8 @@ Table of Contents                             *venison.nvim-table-of-contents*
 ==============================================================================
 1. venison.nvim                                    *venison.nvim-venison.nvim*
 
-~I’m not sure if deer are classified as game animals, but I’m going to
-pretend they are.~
+~I’m not sure if deer are classified as game animals, but let’s pretend
+they are.~
 
 An experimental plugin framework for creating basic games in neovim, based on a
 simple event loop.
