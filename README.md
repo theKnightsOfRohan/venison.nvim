@@ -2,7 +2,7 @@
 
 ~~I'm not sure if deer are classified as game animals, but I'm going to pretend they are.~~
 
-A plugin framework for creating basic games in neovim, based on a simple event loop.
+An experimental plugin framework for creating basic games in neovim, based on a simple event loop.
 
 NOTE: STILL IN DEVELOPMENT, NOT YET READY FOR USE
 
