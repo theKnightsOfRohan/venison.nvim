@@ -1,4 +1,4 @@
-*venison.nvim.txt*        For Neovim >= 0.8.0       Last change: 2024 March 15
+*venison.nvim.txt*        For Neovim >= 0.8.0       Last change: 2024 March 16
 
 ==============================================================================
 Table of Contents                             *venison.nvim-table-of-contents*
