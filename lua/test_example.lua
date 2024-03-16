@@ -4,13 +4,23 @@ local Venison = require("venison")
 local window = Venison.window
 
 local function settings()
-    window:create({
-        ["q"] = function()
-            window:close()
-        end,
-        ["<S-q>"] = function()
-            window:destroy()
-        end,
+    window:create({}, {
+        {
+            mode = "n",
+            key = "q",
+            handler = function()
+                window:close()
+            end,
+            opts = { noremap = true },
+        },
+        {
+            mode = "n",
+            key = "<S-q>",
+            handler = function()
+                window:destroy()
+            end,
+            opts = { noremap = true },
+        },
     })
 end
 

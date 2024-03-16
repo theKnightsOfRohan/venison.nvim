@@ -1,9 +1,13 @@
 local Popup = require("nui.popup")
 local Logger = require("venison.logger")
 
+---@class VenisonPopup:NuiPopup
+---@field height number
+---@field width number
+
 ---@class VenisonWindow
 ---@field mounted boolean
----@field win nil | NuiPopup
+---@field win nil | VenisonPopup
 local Window = {
     mounted = false,
     win = nil,
@@ -66,16 +70,57 @@ function Window:destroy()
     Logger:log("venison.window.destroy(): window destroyed")
 end
 
+function Window:populate_empty_window()
+    local pass = Logger:assert(self.win, "venison.window.populate_empty_window(): window is not created")
+    if not pass then
+        return
+    end
+
+    local contents = {}
+
+    for _ = 1, self.win.height do
+        table.insert(contents, string.rep(" ", self.win.width))
+    end
+
+    local bufnr = self.win.bufnr
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, contents)
+end
+
+---@param maps VenisonWindowMapOpts[]
+function Window:set_keymaps(maps)
+    local pass = Logger:assert(maps, "venison.window.set_keymaps(): no keymaps provided")
+    if not pass then
+        return
+    end
+
+    for _, map in ipairs(maps) do
+        local mode = map.mode
+        local key = map.key
+        local handler = map.handler
+        local opts = map.opts or {}
+
+        self.win:map(mode, key, handler, opts)
+    end
+end
+
+---@class VenisonWindowMapOpts
+---@field mode string
+---@field key string|string[]
+---@field handler string|function
+---@field opts table<string, boolean>
+---@field ___force___ any
+
 -- Create a window, set up keymaps, and store it in the window object
 ---@param self VenisonWindow
----@param maps table<string | string[], function | string>
-function Window:create(maps)
+---@param win_opts nui_popup_options
+---@param maps VenisonWindowMapOpts[]
+function Window:create(win_opts, maps)
     local pass = Logger:assert(self.win == nil, "venison.window.create(): window already exists")
     if not pass then
         return
     end
 
-    self.win = Popup({
+    local passed_opts = vim.tbl_deep_extend("force", {
         position = "50%",
         size = {
             width = 80,
@@ -98,18 +143,25 @@ function Window:create(maps)
             winblend = 10,
             winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
         },
-    })
+    }, win_opts or {})
+
+    self.win = Popup(passed_opts)
+    self.win.height = passed_opts.size.height
+    self.win.width = passed_opts.size.width
 
     Logger:log("venison.window.create(): window created")
 
-    for keys, mapping in pairs(maps) do
-        self.win:map("n", keys, mapping, { noremap = true })
-    end
+    self:set_keymaps(maps)
+
+    self:populate_empty_window()
 
     Logger:log(string.format("venison.window.create(): keymaps set: %s", vim.inspect(maps)))
 end
 
-function Window:override(maps)
+---@param self VenisonWindow
+---@param win_opts nui_popup_options
+---@param maps VenisonWindowMapOpts[]
+function Window:override(win_opts, maps)
     local pass = Logger:assert(self.win ~= nil, "venison.window.override(): window does not exist")
     if not pass then
         return
@@ -118,7 +170,7 @@ function Window:override(maps)
     Logger:log("venison.window.override(): overriding window")
 
     self.win = nil
-    self:create(maps)
+    self:create(win_opts, maps)
 end
 
 return Window
