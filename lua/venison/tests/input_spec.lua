@@ -3,19 +3,19 @@ local Input = require("venison.input")
 
 describe("Input should", function()
     it("modify window contents", function()
-        local window = Venison.window;
+        local window = Venison.window
 
         window:create({
             size = {
                 width = 20,
                 height = 20,
-            }
+            },
         }, {})
 
         Input.modify_window_contents(window, {
             start_line = 10,
             start_col = 10,
-            contents = { "hello", "world" }
+            contents = { "hello", "world" },
         })
 
         local bufnr = window.win.bufnr
