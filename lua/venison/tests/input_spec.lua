@@ -2,6 +2,11 @@ local Venison = require("venison")
 local Input = require("venison.input")
 
 describe("Input should", function()
+    before_each(function()
+        vim.cmd("silent only!")
+        vim.cmd("silent enew!")
+    end)
+
     it("modify window contents", function()
         local window = Venison.window
 
