@@ -10,6 +10,9 @@ NOTE: STILL IN DEVELOPMENT, NOT YET READY FOR USE
 - [x] Open and close a window and register commands to that window
 - [x] Save some window state between opening and closing
 - [x] Basic logging to replace breaking asserts
-- [ ] Populate game window with characters and handle explicit content modifications
+- [x] Populate game window with characters and handle explicit content modifications
 - [ ] Create a good api for handling key presses
 - [ ] Make a non-blocking game event loop
+
+## Known Bugs
+- [ ] The window cannot correctly handle applying a text change to the buffer which starts from a negative column number

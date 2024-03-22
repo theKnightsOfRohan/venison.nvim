@@ -1,3 +1,4 @@
+---@class Utils
 local Utils = {}
 
 ---@param orig table | nil
@@ -64,6 +65,27 @@ end
 ---@return boolean
 function Utils.is_white_space(str)
     return str:gsub("%s", "") == ""
+end
+
+---@param base string
+---@param intersect string
+---@param start number
+function Utils.intersect_string(base, intersect, start)
+    local start_pos = start
+    local int_string = intersect
+    if start < 0 then
+        int_string = intersect:sub(start * -1)
+        start_pos = 1
+    end
+
+    local end_pos = #base
+    local end_pos_intersect = start_pos + #int_string - 1
+
+    if end_pos_intersect < end_pos then
+        end_pos = end_pos_intersect
+    end
+
+    return base:sub(1, start_pos - 1) .. int_string:sub(1, end_pos - start_pos + 1) .. base:sub(end_pos + 1)
 end
 
 return Utils

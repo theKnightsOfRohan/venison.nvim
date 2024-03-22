@@ -136,7 +136,7 @@ function Window:create(win_opts, maps)
             text = {},
         },
         buf_options = {
-            modifiable = true,
+            modifiable = false,
             readonly = false,
         },
         win_options = {
@@ -145,6 +145,7 @@ function Window:create(win_opts, maps)
         },
     }, win_opts or {})
 
+    ---@cast Popup VenisonPopup
     self.win = Popup(passed_opts)
     self.win.height = passed_opts.size.height
     self.win.width = passed_opts.size.width

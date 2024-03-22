@@ -1,3 +1,5 @@
+-- local Input = require("venison.input")
+
 ---@class Venison
 ---@field window VenisonWindow
 local Venison = {
