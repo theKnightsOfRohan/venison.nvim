@@ -14,10 +14,13 @@ function Input.unbind_all_keys(window)
 
     local bufnr = window.win.bufnr
 
-    local keys = vim.api.nvim_buf_get_keymap(bufnr)
-    for _, key in ipairs(keys) do
-        if key.lhs ~= "" then
-            vim.api.nvim_buf_del_keymap(bufnr, key.mode, key.lhs)
+    local modes = { "n", "v", "i", "x" }
+    for _, mode in ipairs(modes) do
+        local keys = vim.api.nvim_buf_get_keymap(bufnr, mode)
+        for _, key in ipairs(keys) do
+            if key.lhs ~= "" then
+                vim.api.nvim_buf_del_keymap(bufnr, mode, key.lhs)
+            end
         end
     end
 end
@@ -34,6 +37,7 @@ function Input._apply_change(window, contents)
     local bufnr = window.win.bufnr
     local win_width = window.win.width
     local win_height = window.win.height
+    local res = true
 
     vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
     vim.api.nvim_buf_set_option(bufnr, "readonly", false)
@@ -49,7 +53,8 @@ function Input._apply_change(window, contents)
             )
         )
         if not pass then
-            return false
+            res = false
+            break
         end
 
         pass = Logger:assert(
@@ -67,11 +72,17 @@ function Input._apply_change(window, contents)
             "input.apply_change(): line width does not match window width"
         )
         if not pass then
-            return false
+            res = false
+            break
         end
 
         local start_col = contents.start_col + 1
         local new_line_contents = Utils.intersect_string(old_line_contents, line, start_col)
+
+        pass = Logger:assert(new_line_contents ~= old_line_contents, "input.apply_change(): no change detected")
+        if not pass then
+            goto continue
+        end
 
         pass = Logger:assert(
             #new_line_contents == #old_line_contents,
@@ -82,7 +93,8 @@ function Input._apply_change(window, contents)
             )
         )
         if not pass then
-            return false
+            res = false
+            break
         end
 
         vim.api.nvim_buf_set_lines(bufnr, line_num, line_num + 1, false, { new_line_contents })
@@ -93,7 +105,7 @@ function Input._apply_change(window, contents)
     vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
     vim.api.nvim_buf_set_option(bufnr, "readonly", true)
 
-    return true
+    return res
 end
 
 ---@param window VenisonWindow
