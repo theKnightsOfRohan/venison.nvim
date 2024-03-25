@@ -2,7 +2,7 @@
 
 ~~I'm not sure if deer are classified as game animals, but let's pretend they are.~~
 
-An experimental plugin framework for creating games in neovim, based on a simple event loop.
+An experimental plugin framework for creating games in neovim, based on a simple event loop. Inspired by [ThePrimeagen/vim-with-me](https://github.com/ThePrimeagen/vim-with-me), but with a focus on a simpler, more intuitive API, and making use of some pre-built, much more powerful libraries. Also, you shouldn't need to use a separate language to code the game.
 
 NOTE: STILL IN DEVELOPMENT, NOT YET READY FOR USE
 
@@ -16,3 +16,6 @@ NOTE: STILL IN DEVELOPMENT, NOT YET READY FOR USE
 
 ## Known Bugs
 - [ ] The window cannot correctly handle applying a text change to the buffer which starts from a negative column number
+
+## Contributing
+All contributions are welcome! Please feel free to open an issue or pull request. Note that I have the programming capabilities of a small rodent, as will be evident from the codebase, so please don't be afraid to suggest changes or improvements to the API.
