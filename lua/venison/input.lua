@@ -54,7 +54,7 @@ function Input._apply_change(window, contents)
 
         pass = Logger:assert(
             line_num >= 0,
-            string.format("venison.input.apply_change(): line number of %d is less than zero", line_num)
+            string.format("input.apply_change(): line number of %d is less than zero", line_num)
         )
         if not pass then
             goto continue
@@ -64,7 +64,7 @@ function Input._apply_change(window, contents)
 
         pass = Logger:assert(
             #old_line_contents == win_width,
-            "venison.input.apply_change(): line width does not match window width"
+            "input.apply_change(): line width does not match window width"
         )
         if not pass then
             return false
@@ -76,7 +76,7 @@ function Input._apply_change(window, contents)
         pass = Logger:assert(
             #new_line_contents == #old_line_contents,
             string.format(
-                "venison.input.apply_change(): new line width does not match old line width: %d != %d",
+                "input.apply_change(): new line width does not match old line width: %d != %d",
                 #new_line_contents,
                 #old_line_contents
             )
