@@ -15,12 +15,12 @@ local Window = {
 
 ---@param self VenisonWindow
 function Window:open()
-    local pass = Logger:assert(self.win, "venison.window.open(): window is not created")
+    local pass = Logger:assert(self.win, "window.open(): window is not created")
     if not pass then
         return
     end
 
-    pass = Logger:assert(not self.mounted, "venison.window.open(): window is already open")
+    pass = Logger:assert(not self.mounted, "window.open(): window is already open")
     if not pass then
         return
     end
@@ -28,18 +28,18 @@ function Window:open()
     self.win:show()
     self.mounted = true
 
-    Logger:log("venison.window.open(): window opened")
+    Logger:log("window.open(): window opened")
 end
 
 -- Close a window which has been opened (non-destructive)
 ---@param self VenisonWindow
 function Window:close()
-    local pass = Logger:assert(self.win, "venison.window.close(): window is not created")
+    local pass = Logger:assert(self.win, "window.close(): window is not created")
     if not pass then
         return
     end
 
-    pass = Logger:assert(self.mounted, "venison.window.close(): window is not open")
+    pass = Logger:assert(self.mounted, "window.close(): window is not open")
     if not pass then
         return
     end
@@ -47,19 +47,19 @@ function Window:close()
     self.win:hide()
     self.mounted = false
 
-    Logger:log("venison.window.close(): window closed")
+    Logger:log("window.close(): window closed")
 end
 
 -- Destroy a window which has been created
 ---@param self VenisonWindow
 function Window:destroy()
-    local pass = Logger:assert(self.win, "venison.window.destroy(): window is not created")
+    local pass = Logger:assert(self.win, "window.destroy(): window is not created")
     if not pass then
         return
     end
 
     if self.mounted then
-        Logger:log("venison.window.destroy(): closing open window before destroying")
+        Logger:log("window.destroy(): closing open window before destroying")
         self:close()
     end
 
@@ -67,11 +67,11 @@ function Window:destroy()
     self.win = nil
     self.mounted = false
 
-    Logger:log("venison.window.destroy(): window destroyed")
+    Logger:log("window.destroy(): window destroyed")
 end
 
 function Window:populate_empty_window()
-    local pass = Logger:assert(self.win, "venison.window.populate_empty_window(): window is not created")
+    local pass = Logger:assert(self.win, "window.populate_empty_window(): window is not created")
     if not pass then
         return
     end
@@ -88,7 +88,7 @@ end
 
 ---@param maps VenisonWindowMapOpts[]
 function Window:set_keymaps(maps)
-    local pass = Logger:assert(maps, "venison.window.set_keymaps(): no keymaps provided")
+    local pass = Logger:assert(maps, "window.set_keymaps(): no keymaps provided")
     if not pass then
         return
     end
@@ -115,7 +115,7 @@ end
 ---@param win_opts nui_popup_options
 ---@param maps VenisonWindowMapOpts[]
 function Window:create(win_opts, maps)
-    local pass = Logger:assert(self.win == nil, "venison.window.create(): window already exists")
+    local pass = Logger:assert(self.win == nil, "window.create(): window already exists")
     if not pass then
         return
     end
@@ -150,25 +150,25 @@ function Window:create(win_opts, maps)
     self.win.height = passed_opts.size.height
     self.win.width = passed_opts.size.width
 
-    Logger:log("venison.window.create(): window created")
+    Logger:log("window.create(): window created")
 
     self:set_keymaps(maps)
 
     self:populate_empty_window()
 
-    Logger:log(string.format("venison.window.create(): keymaps set: %s", vim.inspect(maps)))
+    Logger:log(string.format("window.create(): keymaps set: %s", vim.inspect(maps)))
 end
 
 ---@param self VenisonWindow
 ---@param win_opts nui_popup_options
 ---@param maps VenisonWindowMapOpts[]
 function Window:override(win_opts, maps)
-    local pass = Logger:assert(self.win ~= nil, "venison.window.override(): window does not exist")
+    local pass = Logger:assert(self.win ~= nil, "window.override(): window does not exist")
     if not pass then
         return
     end
 
-    Logger:log("venison.window.override(): overriding window")
+    Logger:log("window.override(): overriding window")
 
     self.win = nil
     self:create(win_opts, maps)

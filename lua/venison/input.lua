@@ -7,7 +7,7 @@ local Input = {}
 -- Unbind all keymaps from the Venison window
 ---@param window VenisonWindow
 function Input.unbind_all_keys(window)
-    local pass = Logger:assert(window.win, "venison.input.unbind_all_keys(): window is not created")
+    local pass = Logger:assert(window.win, "input.unbind_all_keys(): window is not created")
     if not pass then
         return
     end
@@ -43,7 +43,7 @@ function Input._apply_change(window, contents)
         local pass = Logger:assert(
             line_num <= win_height,
             string.format(
-                "venison.input.apply_change(): line number of %d exceeds window height of %d",
+                "input.apply_change(): line number of %d exceeds window height of %d",
                 line_num,
                 win_height
             )
@@ -99,18 +99,18 @@ end
 ---@param window VenisonWindow
 ---@param contents VenisonInputModifications
 function Input.modify_window_contents(window, contents)
-    local pass = Logger:assert(window.win, "venison.input.modify_window_contents(): window is not created")
+    local pass = Logger:assert(window.win, "input.modify_window_contents(): window is not created")
     if not pass then
         return
     end
 
     pass = Input._apply_change(window, contents)
     if not pass then
-        Logger:log("venison.input.modify_window_contents(): modifications failed")
+        Logger:log("input.modify_window_contents(): modifications failed")
         return
     end
 
-    Logger:log("venison.input.modify_window_contents(): modifications applied")
+    Logger:log("input.modify_window_contents(): modifications applied")
 end
 
 return Input
