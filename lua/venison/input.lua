@@ -43,14 +43,10 @@ function Input._apply_change(window, contents)
     vim.api.nvim_buf_set_option(bufnr, "readonly", false)
 
     for i, line in ipairs(contents.contents) do
-        local line_num = contents.start_line + i - 2
+        local line_num = contents.start_line + i - 1
         local pass = Logger:assert(
             line_num <= win_height,
-            string.format(
-                "input.apply_change(): line number of %d exceeds window height of %d",
-                line_num,
-                win_height
-            )
+            string.format("input.apply_change(): line number of %d exceeds window height of %d", line_num, win_height)
         )
         if not pass then
             res = false
@@ -65,7 +61,7 @@ function Input._apply_change(window, contents)
             goto continue
         end
 
-        local old_line_contents = vim.api.nvim_buf_get_lines(bufnr, line_num, line_num + 1, false)[1]
+        local old_line_contents = vim.api.nvim_buf_get_lines(bufnr, line_num - 1, line_num, false)[1]
 
         pass = Logger:assert(
             #old_line_contents == win_width,
@@ -88,8 +84,7 @@ function Input._apply_change(window, contents)
             #new_line_contents == #old_line_contents,
             string.format(
                 "input.apply_change(): new line width does not match old line width: %d != %d",
-                #new_line_contents,
-                #old_line_contents
+                #new_line_contents, #old_line_contents
             )
         )
         if not pass then
@@ -97,7 +92,7 @@ function Input._apply_change(window, contents)
             break
         end
 
-        vim.api.nvim_buf_set_lines(bufnr, line_num, line_num + 1, false, { new_line_contents })
+        vim.api.nvim_buf_set_lines(bufnr, line_num - 1, line_num, false, { new_line_contents })
 
         ::continue::
     end

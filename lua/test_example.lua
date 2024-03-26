@@ -28,8 +28,8 @@ local function settings()
             handler = function()
                 local loc = vim.api.nvim_win_get_cursor(0)
                 Input.modify_window_contents(window, {
-                    start_line = loc[1] - 2,
-                    start_col = loc[2] - 2,
+                    start_line = loc[1],
+                    start_col = loc[2],
                     contents = {
                         "hello",
                         "world",
