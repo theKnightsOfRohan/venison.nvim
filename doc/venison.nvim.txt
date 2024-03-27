@@ -1,4 +1,4 @@
-*venison.nvim.txt*        For Neovim >= 0.8.0       Last change: 2024 March 26
+*venison.nvim.txt*        For Neovim >= 0.8.0       Last change: 2024 March 27
 
 ==============================================================================
 Table of Contents                             *venison.nvim-table-of-contents*
@@ -32,11 +32,13 @@ ROADMAP                                    *venison.nvim-venison.nvim-roadmap*
 - Populate game window with characters and handle explicit content modifications
 - Create a good api for handling key presses
 - Make a non-blocking game event loop
+- Refactor classes to make Venison a window manager, and each window handle its own game loop and input
 
 
 KNOWN BUGS                              *venison.nvim-venison.nvim-known-bugs*
 
 - The window cannot correctly handle applying a text change to the buffer which starts from a negative column number
+- The window does not stop the game loop when destroyed
 
 
 CONTRIBUTING                          *venison.nvim-venison.nvim-contributing*
