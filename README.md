@@ -11,11 +11,13 @@ NOTE: STILL IN DEVELOPMENT, NOT YET READY FOR USE
 - [x] Save some window state between opening and closing
 - [x] Basic logging to replace breaking asserts
 - [x] Populate game window with characters and handle explicit content modifications
-- [ ] Create a good api for handling key presses
-- [ ] Make a non-blocking game event loop
+- [x] Create a good api for handling key presses
+- [x] Make a non-blocking game event loop
+- [ ] Refactor classes to make Venison a window manager, and each window handle its own game loop and input
 
 ## Known Bugs
 - [ ] The window cannot correctly handle applying a text change to the buffer which starts from a negative column number
+- [ ] The window does not stop the game loop when destroyed
 
 ## Contributing
 All contributions are welcome! Please feel free to open an issue or pull request. Note that I have the programming capabilities of a small rodent, as will be evident from the codebase, so please don't be afraid to suggest changes or improvements to the API.

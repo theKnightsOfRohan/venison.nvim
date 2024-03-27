@@ -17,7 +17,7 @@ describe("Input should", function()
             },
         }, {})
 
-        Input.modify_window_contents(window, {
+        Input.win_write_text(window, {
             start_line = 10,
             start_col = 10,
             contents = { "hello", "world" },

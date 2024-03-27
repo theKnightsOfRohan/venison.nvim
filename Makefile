@@ -16,4 +16,4 @@ clean:
 	rm -rf /tmp/venison_test/nui.nvim
 
 all:
-	make fmt lint test clean
+	make fmt lint test

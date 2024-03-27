@@ -88,4 +88,14 @@ function Utils.intersect_string(base, intersect, start)
     return base:sub(1, start_pos - 1) .. int_string:sub(1, end_pos - start_pos + 1) .. base:sub(end_pos + 1)
 end
 
+---@param bool boolean
+---@return string
+function Utils.bool_to_string(bool)
+    if bool then
+        return "true"
+    else
+        return "false"
+    end
+end
+
 return Utils

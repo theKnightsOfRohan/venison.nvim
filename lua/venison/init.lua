@@ -1,4 +1,5 @@
 -- local Input = require("venison.input")
+local Drawer = require("venison.loop")
 
 ---@class Venison
 ---@field window VenisonWindow
@@ -12,10 +13,7 @@ local Venison = {
 function Venison.main(settings, setup, draw)
     settings()
     setup()
-    -- ah, yes, an extremely efficient game loop
-    -- while true do
-    draw()
-    -- end
+    Drawer.draw(draw)
 end
 
 return Venison

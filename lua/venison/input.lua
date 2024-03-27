@@ -33,20 +33,21 @@ end
 ---@param window VenisonWindow
 ---@param contents VenisonInputModifications
 ---@return boolean pass
-function Input._apply_change(window, contents)
+function Input.insert_text_contents(window, contents)
     local bufnr = window.win.bufnr
     local win_width = window.win.width
     local win_height = window.win.height
     local res = true
 
-    vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
-    vim.api.nvim_buf_set_option(bufnr, "readonly", false)
-
     for i, line in ipairs(contents.contents) do
         local line_num = contents.start_line + i - 1
         local pass = Logger:assert(
             line_num <= win_height,
-            string.format("input.apply_change(): line number of %d exceeds window height of %d", line_num, win_height)
+            string.format(
+                "input.insert_text_contents(): line number of %d exceeds window height of %d",
+                line_num,
+                win_height
+            )
         )
         if not pass then
             res = false
@@ -55,7 +56,7 @@ function Input._apply_change(window, contents)
 
         pass = Logger:assert(
             line_num >= 0,
-            string.format("input.apply_change(): line number of %d is less than zero", line_num)
+            string.format("input.insert_text_contents(): line number of %d is less than zero", line_num)
         )
         if not pass then
             goto continue
@@ -65,7 +66,7 @@ function Input._apply_change(window, contents)
 
         pass = Logger:assert(
             #old_line_contents == win_width,
-            "input.apply_change(): line width does not match window width"
+            "input.insert_text_contents(): line width does not match window width"
         )
         if not pass then
             res = false
@@ -75,7 +76,7 @@ function Input._apply_change(window, contents)
         local start_col = contents.start_col + 1
         local new_line_contents = Utils.intersect_string(old_line_contents, line, start_col)
 
-        pass = Logger:assert(new_line_contents ~= old_line_contents, "input.apply_change(): no change detected")
+        pass = Logger:assert(new_line_contents ~= old_line_contents, "input.insert_text_contents(): no change detected")
         if not pass then
             goto continue
         end
@@ -83,8 +84,9 @@ function Input._apply_change(window, contents)
         pass = Logger:assert(
             #new_line_contents == #old_line_contents,
             string.format(
-                "input.apply_change(): new line width does not match old line width: %d != %d",
-                #new_line_contents, #old_line_contents
+                "input.insert_text_contents(): new line width does not match old line width: %d != %d",
+                #new_line_contents,
+                #old_line_contents
             )
         )
         if not pass then
@@ -97,21 +99,25 @@ function Input._apply_change(window, contents)
         ::continue::
     end
 
-    vim.api.nvim_buf_set_option(bufnr, "modifiable", false)
-    vim.api.nvim_buf_set_option(bufnr, "readonly", true)
-
     return res
 end
 
 ---@param window VenisonWindow
 ---@param contents VenisonInputModifications
-function Input.modify_window_contents(window, contents)
+function Input.win_write_text(window, contents)
     local pass = Logger:assert(window.win, "input.modify_window_contents(): window is not created")
     if not pass then
         return
     end
 
-    pass = Input._apply_change(window, contents)
+    vim.api.nvim_buf_set_option(window.win.bufnr, "modifiable", true)
+    vim.api.nvim_buf_set_option(window.win.bufnr, "readonly", false)
+
+    pass = Input.insert_text_contents(window, contents)
+
+    vim.api.nvim_buf_set_option(window.win.bufnr, "modifiable", false)
+    vim.api.nvim_buf_set_option(window.win.bufnr, "readonly", true)
+
     if not pass then
         Logger:log("input.modify_window_contents(): modifications failed")
         return
