@@ -1,5 +1,6 @@
 local Popup = require("nui.popup")
 local Logger = require("venison.logger")
+local Draw = require("venison.loop")
 
 ---@class VenisonPopup:NuiPopup
 ---@field height number
@@ -28,6 +29,8 @@ function Window:open()
     self.win:show()
     self.mounted = true
 
+    Draw.loop_start()
+
     Logger:log("window.open(): window opened")
 end
 
@@ -46,6 +49,8 @@ function Window:close()
 
     self.win:hide()
     self.mounted = false
+
+    Draw.loop_stop()
 
     Logger:log("window.close(): window closed")
 end
@@ -66,6 +71,8 @@ function Window:destroy()
     self.win:unmount()
     self.win = nil
     self.mounted = false
+
+    Draw.loop_reset()
 
     Logger:log("window.destroy(): window destroyed")
 end

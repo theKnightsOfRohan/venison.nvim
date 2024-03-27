@@ -12,6 +12,14 @@ end
 local function setup()
     window.win:map("n", "p", Draw.loop_toggle, { noremap = true })
 
+    window.win:map("n", "q", function()
+        window:close()
+    end, { noremap = true })
+
+    window.win:map("n", "Q", function()
+        window:destroy()
+    end, { noremap = true })
+
     window:open()
 end
 
