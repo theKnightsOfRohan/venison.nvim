@@ -13,7 +13,7 @@ NOTE: STILL IN DEVELOPMENT, NOT YET READY FOR USE
 - [x] Populate game window with characters and handle explicit content modifications
 - [x] Create a good api for handling key presses
 - [x] Make a non-blocking game event loop
-- [ ] Refactor classes to make Venison a window manager, and each window handle its own game loop and input
+- [ ] Refactor classes to make the Venison main class a window manager, and each window handle its own game loop and input
 
 ## Known Bugs
 - [ ] The window cannot correctly handle applying a text change to the buffer which starts from a negative column number
