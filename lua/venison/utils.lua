@@ -67,25 +67,42 @@ function Utils.is_white_space(str)
     return str:gsub("%s", "") == ""
 end
 
+-- Overwrites the base string with the intersect string starting at the start index
+--
+-- If start is less than 1, then the intersect string's front is truncated to where the base string starts
+--
+-- If the intersect would go past the end of the base string, the rest is truncated
+--
+-- The returned string is always the same length as the base string
+--
+-- Examples:
+-- intersect_string("abcdef", "123", 2) -> "a123ef"
+--
+-- intersect_string("abcdef", "123", 0) -> "23cdef"
+--
+-- intersect_string("abcdef", "123", 5) -> "abcd12"
 ---@param base string
 ---@param intersect string
 ---@param start number
+---@return string res
 function Utils.intersect_string(base, intersect, start)
-    local start_pos = start
-    local int_string = intersect
-    if start < 0 then
-        int_string = intersect:sub(start * -1)
-        start_pos = 1
+    local res_table = { "", "", "" }
+
+    if start < 1 then
+        res_table[1] = ""
+        res_table[2] = intersect:sub(-start + 2)
+        res_table[3] = base:sub(#res_table[2] + 1)
+    elseif start + #intersect > #base then
+        res_table[1] = base:sub(1, start - 1)
+        res_table[2] = intersect:sub(1, #base - #res_table[1])
+        res_table[3] = ""
+    else
+        res_table[1] = base:sub(1, start - 1)
+        res_table[2] = intersect
+        res_table[3] = base:sub(start + #intersect)
     end
 
-    local end_pos = #base
-    local end_pos_intersect = start_pos + #int_string - 1
-
-    if end_pos_intersect < end_pos then
-        end_pos = end_pos_intersect
-    end
-
-    return base:sub(1, start_pos - 1) .. int_string:sub(1, end_pos - start_pos + 1) .. base:sub(end_pos + 1)
+    return table.concat(res_table)
 end
 
 ---@param bool boolean

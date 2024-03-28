@@ -55,8 +55,8 @@ function Input.insert_text_contents(window, contents)
         end
 
         pass = Logger:assert(
-            line_num >= 0,
-            string.format("input.insert_text_contents(): line number of %d is less than zero", line_num)
+            line_num > 0,
+            string.format("input.insert_text_contents(): line number of %d < 1", line_num)
         )
         if not pass then
             goto continue

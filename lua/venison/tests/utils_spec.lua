@@ -33,12 +33,16 @@ describe("Utils should", function()
     end)
 
     it("intersect strings", function()
-        local base = "potato"
-        local intersect = "tomato"
-        local result = Utils.intersect_string(base, intersect, 3)
-        assert.are.equal("potoma", result)
+        local base = "abcdef"
+        local intersect = "123"
 
-        result = Utils.intersect_string(base, intersect, -3)
-        assert.are.equal("matoto", result)
+        local result = Utils.intersect_string(base, intersect, 2)
+        assert.are.equal("a123ef", result)
+
+        result = Utils.intersect_string(base, intersect, 0)
+        assert.are.equal("23cdef", result)
+
+        result = Utils.intersect_string(base, intersect, 5)
+        assert.are.equal("abcd12", result)
     end)
 end)

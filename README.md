@@ -16,8 +16,8 @@ NOTE: STILL IN DEVELOPMENT, NOT YET READY FOR USE
 - [ ] Refactor classes to make the Venison main class a window manager, and each window handle its own game loop and input
 
 ## Known Bugs
-- [ ] The window cannot correctly handle applying a text change to the buffer which starts from a negative column number
-- [ ] The window does not stop the game loop when destroyed
+- [x] The window cannot correctly handle applying a text change to the buffer which starts from a negative column number
+- [x] The window does not stop the game loop when destroyed
 
 ## Contributing
 All contributions are welcome! Please feel free to open an issue or pull request. Note that I have the programming capabilities of a small rodent, as will be evident from the codebase, so please don't be afraid to suggest changes or improvements to the API.

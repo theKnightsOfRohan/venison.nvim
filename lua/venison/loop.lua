@@ -13,7 +13,7 @@ local Loop = {
 
 ---@param draw_method function
 function Loop.draw(draw_method)
-    local pass = Logger:assert(Loop.timer, "draw.draw(): failed to create timer")
+    local pass = Logger:assert(Loop.timer, "loop.draw(): timer has not been initialized")
     if not pass then
         return
     end
@@ -31,28 +31,28 @@ function Loop.draw(draw_method)
         end)
     )
 
-    Logger:log("draw.draw(): game loop started")
+    Logger:log("loop.draw(): game loop started")
 end
 
 ---@param new_rate number
 function Loop.frame_rate(new_rate)
-    Logger:log(string.format("draw.frame_rate(): setting frame rate from %d to %d", Loop._frame_rate, new_rate))
+    Logger:log(string.format("loop.frame_rate(): setting frame rate from %d to %d", Loop._frame_rate, new_rate))
     Loop._frame_rate = new_rate
 end
 
 function Loop.loop_stop()
-    Logger:log("draw.loop_stop(): stopping game loop")
+    Logger:log("loop.loop_stop(): stopping game loop")
     Loop._looping = false
 end
 
 function Loop.loop_start()
-    Logger:log("draw.loop_start(): starting game loop")
+    Logger:log("loop.loop_start(): starting game loop")
     Loop._looping = true
 end
 
 function Loop.loop_toggle()
     Logger:log(
-        "draw.loop_toggle(): toggling game loop from %s to %s",
+        "loop.loop_toggle(): toggling game loop from %s to %s",
         Utils.bool_to_string(Loop._looping),
         Utils.bool_to_string(not Loop._looping)
     )
@@ -60,11 +60,11 @@ function Loop.loop_toggle()
 end
 
 function Loop.loop_reset()
-    Logger:log("draw.loop_reset(): resetting game loop")
+    Logger:log("loop.loop_reset(): resetting game loop")
     local pass, err = Loop.timer:stop()
 
     if not pass then
-        Logger:log("draw.loop_reset(): failed to stop timer")
+        Logger:log("loop.loop_reset(): failed to stop timer")
         Logger:log(err)
     end
 end
