@@ -33,6 +33,7 @@ ROADMAP                                    *venison.nvim-venison.nvim-roadmap*
 - Create a good api for handling key presses
 - Make a non-blocking game event loop
 - Refactor classes to make the Venison main class a window manager, and each window handle its own game loop and input
+- Create a simple game to demonstrate the API
 
 
 KNOWN BUGS                              *venison.nvim-venison.nvim-known-bugs*
