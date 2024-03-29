@@ -5,12 +5,12 @@ local Utils = require("venison.utils")
 ---@field lines string[]
 ---@field max_lines number
 ---@field enabled boolean
-local VenisonLog = {}
+local Logger = {}
 
-VenisonLog.__index = VenisonLog
+Logger.__index = Logger
 
 ---@return VenisonLog
-function VenisonLog:new()
+function Logger:new()
     local logger = setmetatable({
         lines = {},
         enabled = true,
@@ -20,16 +20,16 @@ function VenisonLog:new()
     return logger
 end
 
-function VenisonLog:disable()
+function Logger:disable()
     self.enabled = false
 end
 
-function VenisonLog:enable()
+function Logger:enable()
     self.enabled = true
 end
 
 ---@vararg any
-function VenisonLog:log(...)
+function Logger:log(...)
     local processed = {}
     for i = 1, select("#", ...) do
         local item = select(i, ...)
@@ -57,11 +57,11 @@ function VenisonLog:log(...)
     end
 end
 
-function VenisonLog:clear()
+function Logger:clear()
     self.lines = {}
 end
 
-function VenisonLog:show()
+function Logger:show()
     local bufnr = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, self.lines)
     vim.api.nvim_win_set_buf(0, bufnr)
@@ -70,7 +70,7 @@ end
 ---@param condition any
 ---@param message string
 ---@return boolean success
-function VenisonLog:assert(condition, message)
+function Logger:assert(condition, message)
     local success, result = pcall(function()
         assert(condition, string.format("ERROR: %s", message))
     end)
@@ -81,4 +81,4 @@ function VenisonLog:assert(condition, message)
     return success
 end
 
-return VenisonLog:new()
+return Logger:new()

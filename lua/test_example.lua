@@ -1,56 +1,43 @@
 -- Run using :so
 local Venison = require("venison")
-local Input = require("venison.input")
-local Draw = require("venison.loop")
 
-local window = Venison.window
-
-local function settings()
-    window:create({
-        size = {
-            width = 20,
-            height = 20,
-        },
-        title = "Test Example",
-    }, {})
-end
+local window = Venison.create_window("test", {
+    size = {
+        width = 40,
+        height = 20,
+    },
+}, {})
 
 local function setup()
-    window.win:map("n", "p", Draw.loop_toggle, { noremap = true })
+    window:map("n", "p", function()
+        window:loop_toggle()
+    end, { noremap = true })
 
-    window.win:map("n", "q", function()
+    window:map("n", "q", function()
         window:close()
     end, { noremap = true })
 
-    window.win:map("n", "Q", function()
+    window:map("n", "Q", function()
         window:destroy()
     end, { noremap = true })
 
-    window.win:map("n", "a", function()
+    window:map("n", "a", function()
         local pos = vim.api.nvim_win_get_cursor(0)
-        Input.win_write_text(window, {
-            start_line = pos[1] - 1,
-            start_col = pos[2] - 1,
-            contents = { "hello", "world" },
-        })
+        window:write_text({ "hello", "world" }, pos[1], pos[2])
     end, { noremap = true })
+
+    window.frame_rate = 60
 end
 
 local count = 0
 
 local function draw()
     count = count + 1
-    Input.win_write_text(window, {
-        start_line = 10,
-        start_col = 10,
-        contents = {
-            string.format("%d", count),
-        },
-    })
+    window:write_text({ "" .. count }, 20, 10)
 end
 
-vim.api.nvim_create_user_command("VL", function()
+vim.api.nvim_create_user_command("VW", function()
     window:open()
 end, {})
 
-Venison.main(settings, setup, draw)
+window:main(setup, draw)
